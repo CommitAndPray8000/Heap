@@ -54,40 +54,76 @@ class Heap
     }
 
     void DownHeapify(int index, int limit)
-    {
-        if(index<limit-1)
+    { 
+      //|||||| New Better Code ||||||||||||
+      int c1 = (index*2)+1;
+      int c2 = (index*2)+2;
+      
+      bool c1_exist = c1 < Heap_size;
+      bool c2_exist = c2 < Heap_size;
+      
+      if(!(c1_exist))
+      {
+        return;
+      }
+      
+      if(!(c2_exist) && c1 > Heap_arr[index])
+      {
+        swap(c1, index);
+        DownHeapify(c1, Heap_size);
+      }
+      
+      else
+      {
+        if(Heap_arr[c2] > Heap_arr[index])
         {
-            int L_Child= index*2+1;
-            int R_Child= index*2+2;
-            int larger;
-
-            if(L_Child < limit )
-            {
-                if(R_Child < limit)
-                {
-                    if(Heap_arr[R_Child] > Heap_arr[L_Child])
-                        larger = R_Child;
-                        
-                    else
-                        larger = L_Child;
-
-                    if(Heap_arr[index] > Heap_arr[larger])
-                    {    
-                        swap(index,larger);
-                        DownHeapify(larger, limit);
-                    }
-
-                }
-                else
-                {
-                    if(Heap_arr[index] < Heap_arr[L_Child])
-                    {
-                        swap(index,L_Child);
-                        DownHeapify(L_Child, limit);
-                    }
-                }
-            }
+          swap(c2, index);
+          DownHeapify(c2, index);
         }
+        
+        else if(c1 > Heap_arr[index])
+        {
+          swap(c1, index);
+          DownHeapify(c1, index);
+        }
+      }
+      
+
+
+        //||||||| Old In-Efficient Code
+        // if(index<limit-1)
+        // {
+        //     int L_Child= index*2+1;
+        //     int R_Child= index*2+2;
+        //     int larger;
+        //
+        //     if(L_Child < limit )
+        //     {
+        //         if(R_Child < limit)
+        //         {
+        //             if(Heap_arr[R_Child] > Heap_arr[L_Child])
+        //                 larger = R_Child;
+        //
+        //             else
+        //                 larger = L_Child;
+        //
+        //             if(Heap_arr[index] > Heap_arr[larger])
+        //             {    
+        //                 swap(index,larger);
+        //                 DownHeapify(larger, limit);
+        //             }
+        //
+        //         }
+        //         else
+        //         {
+        //             if(Heap_arr[index] < Heap_arr[L_Child])
+        //             {
+        //                 swap(index,L_Child);
+        //                 DownHeapify(L_Child, limit);
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     void HeapSort()
@@ -102,33 +138,34 @@ class Heap
 
     void DisplayLikeTree(int index)
     {
-        if(index == row_first)
+      int height_of_root = 0;  
+      bool flag = false;
+      
+      int k=0;
+      
+      while(!(flag))
+      {
+        if(pow(2,height_of_root) > Heap_size -1)
         {
-            space_printer(def_rowspace);
+          break;
         }
-        if(index <= row_first*2)
+        height_of_root++;
+      }
+      
+      for(int j=0;j<height_of_root;j++)
+      {
+        space_printer((height_of_root-j)*5);
+        
+        k=pow(2,j)-1;
+        while((k <= pow(2,j+1)-2) && k<Heap_size)        
         {
-            cout<<Heap_arr[index];
-            space_printer(def_rowspace *2 );                 //|||||| Gotta fix the spacing issue, this line is just temporary.
+          cout<<Heap_arr[k];
+          space_printer((height_of_root-j) *10);
+          k++;
+        }
+        cout<<"\n";
+      }
 
-            if(index + 1 < Heap_size)
-                DisplayLikeTree(index +1);
-
-            else
-            {
-                row_first = 0;
-                def_spaces =20;
-                def_rowspace =20;
-            }
-        }
-        else
-        {
-            row_first = index;
-            def_rowspace = def_rowspace/2;
-            def_spaces-=6;
-            cout<<"\n";
-            DisplayLikeTree(index);
-        }
     }
 
     void space_printer(int n)
