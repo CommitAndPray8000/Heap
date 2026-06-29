@@ -59,15 +59,15 @@ class Heap
       int c1 = (index*2)+1;
       int c2 = (index*2)+2;
       
-      bool c1_exist = c1 < Heap_size;
-      bool c2_exist = c2 < Heap_size;
+      bool c1_exist = c1 < limit;
+      bool c2_exist = c2 < limit;
       
       if(!(c1_exist))
       {
         return;
       }
       
-      if(!(c2_exist) && c1 > Heap_arr[index])
+      if(!(c2_exist) && Heap_arr[c1] > Heap_arr[index])
       {
         swap(c1, index);
         DownHeapify(c1, Heap_size);
@@ -75,16 +75,16 @@ class Heap
       
       else
       {
-        if(Heap_arr[c2] > Heap_arr[index])
-        {
-          swap(c2, index);
-          DownHeapify(c2, index);
-        }
+        int larger_child;
+        if(Heap_arr[c1]>Heap_arr[c2])
+          larger_child = c1;
+        else
+          larger_child = c2;
         
-        else if(c1 > Heap_arr[index])
+        if(Heap_arr[larger_child] > Heap_arr[index])
         {
-          swap(c1, index);
-          DownHeapify(c1, index);
+          swap(larger_child, index);
+          DownHeapify(larger_child, limit);
         }
       }
       
