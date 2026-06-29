@@ -70,7 +70,7 @@ class Heap
       if(!(c2_exist) && Heap_arr[c1] > Heap_arr[index])
       {
         swap(c1, index);
-        DownHeapify(c1, Heap_size);
+        DownHeapify(c1, limit);
       }
       
       else
